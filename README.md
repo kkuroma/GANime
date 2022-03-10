@@ -1,8 +1,8 @@
 # GANime-PyTorch
 A Deep Convolutional GAN created for generation of low-medium (64x64 px) resolution images.
 
-Demonstration can be found in `demo.ipynb`, which is created and run on a google colab notebook.
-The dataset used in the demo can be downloaded from https://www.kaggle.com/prasoonkottarathil/gananime-lite.
+Demonstration can be found in `demo.ipynb`, which is created and run on a google colab notebook.<br>
+The dataset used in the demo can be downloaded from https://www.kaggle.com/prasoonkottarathil/gananime-lite.<br>
 A 64x64 processed version (used in my google drive) can be found here https://drive.google.com/file/d/1zUOt42VfZ9jaPNtwZhZOV4pf2mCx0uWL/view?usp=sharing.
 
 To create a dataset from the 64x64 .npy version, simply use
