@@ -13,5 +13,14 @@ import torch
 
 path = 'path to your file'
 arr = np.moveaxis(np.load(path)/127.5-1,-1,1) #(-1,1) normalize and format to C,W,H
-train_loader = torch.utils.data.DataLoader(torch.tensor(arr,  dtype=torch.float), batch_size=128, num_workers=2, shuffle=True)
+dataset = torch.utils.data.DataLoader(torch.tensor(arr,  dtype=torch.float), batch_size=128, num_workers=2, shuffle=True)
+```
+
+Example of using the package on your dataset.
+```
+fron gan import GAN
+
+seed_size = 128
+gan_model = GAN(seed_size)
+gen_model.train(dataset)
 ```
