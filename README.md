@@ -18,7 +18,7 @@ dataset = torch.utils.data.DataLoader(torch.tensor(arr,  dtype=torch.float), bat
 
 Example of using the package on your dataset.
 ```
-fron gan import GAN
+from gan import GAN
 
 seed_size = 128
 gan_model = GAN(seed_size)
