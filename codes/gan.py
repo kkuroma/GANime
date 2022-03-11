@@ -38,7 +38,7 @@ class GAN:
   def __init__(self,
                seed_size = 128
               ):
-    self.seed_size = 128
+    self.seed_size = seed_size
     self.gen = generator(seed_size)
     weight_init(self.gen)
     self.dis = discriminator(seed_size)
