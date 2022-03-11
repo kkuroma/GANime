@@ -142,7 +142,7 @@ class GAN:
                return_noise=True
               ):
     noise = torch.randn(num_rows*num_cols, self.seed_size, 1, 1, device=device, dtype=torch.float)
-    generated = self.gen(noise).cpu()
+    generated = self.gen(noise).cpu().detach()
     
     if plot:
       plotter(generated,
