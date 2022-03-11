@@ -46,8 +46,8 @@ class GAN:
     
   def train(self,
             dataset,
-            dis_optimizer = torch.optim.Adam(dis.parameters(), lr=0.0002, betas=(0.5, 0.999)),
-            gen_optimizer = torch.optim.Adam(gen.parameters(), lr=0.0002, betas=(0.5, 0.999)),
+            dis_optimizer = torch.optim.Adam(self.dis.parameters(), lr=0.0002, betas=(0.5, 0.999)),
+            gen_optimizer = torch.optim.Adam(self.gen.parameters(), lr=0.0002, betas=(0.5, 0.999)),
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), #for GPU support
             num_epochs = 100,
             batch_size = 128,
