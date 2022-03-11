@@ -135,8 +135,8 @@ class GAN:
           plotter(pred.cpu())
           
   def generate(self,
-               num_row=8,
-               num_col=8,
+               num_rows=8,
+               num_cols=8,
                device = torch.device("cuda" if torch.cuda.is_available() else "cpu"),
                plot=True,
                return_noise=True
