@@ -131,7 +131,7 @@ class GAN:
           
       if plot: #end of epoch, plot the fixed seed
         with torch.no_grad():
-          pred = self.gen(visualize_noise)
+          pred = self.gen(fixed_seed)
           plotter(pred.cpu())
           
   def generate(self,
