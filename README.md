@@ -22,5 +22,5 @@ from gan import GAN
 
 seed_size = 128
 gan_model = GAN(seed_size)
-gen_model.train(dataset)
+gan_model.train(dataset)
 ```
