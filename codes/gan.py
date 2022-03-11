@@ -77,7 +77,7 @@ class GAN:
         self.dis.zero_grad()
 
         #step 1
-        noise = torch.randn(b, seed_size, 1, 1, device=device, dtype=torch.float)
+        noise = torch.randn(b, self.seed_size, 1, 1, device=device, dtype=torch.float)
         fake_img = self.gen(noise)
 
         #step 2
