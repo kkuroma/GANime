@@ -146,8 +146,8 @@ class GAN:
     
     if plot:
       plotter(generated,
-              rows=num_row,
-              columns=num_col
+              rows=num_rows,
+              columns=num_cols
              )
       
     if return_noise:
