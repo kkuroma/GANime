@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 def plotter(data,
             rows=8,
             columns=8,
-            renormalize_func = lambda x: x*127.5+127.5
+            renormalize_func = lambda x: (x*127.5+127.5).astype(int)
            ):
   data = np.moveaxis(np.array(data),1,-1)
   if renormalize_func:
