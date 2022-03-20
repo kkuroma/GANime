@@ -12,7 +12,7 @@ def plotter(data,
   data = np.moveaxis(np.array(data),1,-1)
   if renormalize_func:
     data = renormalize_func(data)
-  fig,ax = plt.subplots(rows,columns,figsize=(10,10))
+  fig, ax = plt.subplots(rows,columns,figsize=(10,10))
   for i in range(rows):
     for j in range(columns):
       ax[i,j].imshow(data[j+(i*columns)])
@@ -39,13 +39,24 @@ def weight_init(model):
 class GAN:
   
   def __init__(self,
-               seed_size = 128
+               seed_size = 128,
+               print_loss_every=25,
+               gen_lr = 2e-4,
+               dis_lr = 2e-4,
+               gen_betas=(0.5, 0.999),
+               dis_betas=(0.5, 0.999),
               ):
     self.seed_size = seed_size
     self.gen = generator(seed_size)
     weight_init(self.gen)
     self.dis = discriminator(seed_size)
     weight_init(self.dis)
+    
+    self.print_loss_every = print_loss_every
+    self.gen_lr = gen_lr
+    self.dis_lr = dis_lr
+    self.gen_betas = gen_betas
+    self.dis_betas = dis_betas
     
   def train(self,
             dl,
@@ -57,8 +68,8 @@ class GAN:
     assert type(dl)==torch.utils.data.dataloader.DataLoader, "Require PyTorch's DataLoader for your dataloader"
             
     loss = nn.BCELoss()
-    gen_optimizer = torch.optim.Adam(self.gen.parameters(), lr=0.0002, betas=(0.5, 0.999))
-    dis_optimizer = torch.optim.Adam(self.dis.parameters(), lr=0.0002, betas=(0.5, 0.999))
+    gen_optimizer = torch.optim.AdamW(self.gen.parameters(), lr=self.gen_lr, betas=self.gen_betas)
+    dis_optimizer = torch.optim.AdamW(self.dis.parameters(), lr=self.dis_lr, betas=self.dis_betas)
     self.dis.to(device)
     self.gen.to(device)
     
@@ -128,7 +139,7 @@ class GAN:
         dis_loss_show = '{:.4f}'.format(dis_loss.item())
         gen_loss_show = '{:.4f}'.format(gen_loss.item())
         
-        if i%25==0:
+        if i%self.print_loss_every==0:
           print(f'Iteration {i}\t[Epoch {epoch}/{num_epochs}]\tLosses:\t L_discriminator = {dis_loss_show}\t L_generator = {gen_loss_show}')
           #the only reason I output it this way is to make it look nice, nothing more
           
