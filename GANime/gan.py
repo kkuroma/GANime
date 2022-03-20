@@ -1,18 +1,21 @@
 import torch
 from torch import nn
-from components import generator, discriminator
+from .components import generator, discriminator
 import numpy as np
 import matplotlib.pyplot as plt
 
 def plotter(data,
             rows=8,
             columns=8,
+            renormalize_func = lambda x: x*127.5+127.5
            ):
-  data = np.moveaxis(np.array(data*127.5+127.5,dtype=int),1,-1)
+  data = np.moveaxis(np.array(data),1,-1)
+  if renormalize_func:
+    data = renormalize_func(data)
   fig,ax = plt.subplots(rows,columns,figsize=(10,10))
   for i in range(rows):
     for j in range(columns):
-      ax[i,j].imshow(data[i+8*j])
+      ax[i,j].imshow(data[j+(i*columns)])
       ax[i,j].axis('off')
   plt.show()
 
@@ -45,13 +48,13 @@ class GAN:
     weight_init(self.dis)
     
   def train(self,
-            dataset,
-            device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), #for GPU support
+            dl,
             num_epochs = 100,
             batch_size = 128,
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), #for GPU support
             plot = True,
            ):
-    assert type(dataset)==torch.utils.data.dataloader.DataLoader, "Require PyTorch's DataLoader for your dataset"
+    assert type(dl)==torch.utils.data.dataloader.DataLoader, "Require PyTorch's DataLoader for your dataloader"
             
     loss = nn.BCELoss()
     gen_optimizer = torch.optim.Adam(self.gen.parameters(), lr=0.0002, betas=(0.5, 0.999))
@@ -63,7 +66,7 @@ class GAN:
       fixed_seed = torch.randn(64, self.seed_size, 1, 1, device=device, dtype=torch.float)
       
     for epoch in range(num_epochs):
-      for i, data in enumerate(dataset):
+      for i, data in enumerate(dl):
         b = data.shape[0]
         
         '''
