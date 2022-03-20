@@ -5,22 +5,45 @@ Demonstration can be found in https://konkuad.github.io/gan.html, which is creat
 The dataset used in the demo can be downloaded from https://www.kaggle.com/prasoonkottarathil/gananime-lite.<br>
 A 64x64 processed version (used in my google drive) can be found here https://drive.google.com/file/d/1zUOt42VfZ9jaPNtwZhZOV4pf2mCx0uWL/view?usp=sharing.
 
-To create a dataset from the 64x64 .npy version, simply use
+To install, in terminal
+
+```
+git clone https://github.com/konkuad/GANime
+cd GANime
+pip install .
+```
+
+To create a dataloader from an image folder
 
 ```python
-import numpy as np
-import torch
+from torch.utils.data import DataLoader
+import torchvision.transforms as T
 
-path = 'path to your file'
-arr = np.moveaxis(np.load(path)/127.5-1,-1,1) #(-1,1) normalize and format to C,W,H
-dataset = torch.utils.data.DataLoader(torch.tensor(arr,  dtype=torch.float), batch_size=128, num_workers=2, shuffle=True)
+from GANime.gan import plotter
+from GANime.datasets import ImageOnlyDataset
+
+resize_transform = T.Compose([
+    T.Resize(64), #resize
+    T.ToTensor(), #convert to tensor
+    T.Lambda(lambda x: (255*x).int()/127.5-1) #normalize color channels to -1 and 1
+])
+
+ds = ImageOnlyDataset('out2', resize_transform)
+dl = DataLoader(ds, batch_size=128, shuffle=True)
+
+#plot a few images
+it = next(iter(dl))
+plotter(it, rows=8, columns=8, renormalize_func = lambda x: (x*127.5+127.5).astype(int))
 ```
 
-Example of using the package on your dataset.
-```
-from gan import GAN
+Example of using the package on your dataloader.
 
+```
+from GANime.gan import GAN
 seed_size = 128
 gan_model = GAN(seed_size)
-gan_model.train(dataset)
+gan_model.train(dl,
+                num_epochs = 20,
+                batch_size = 128,
+                plot = True,)
 ```
