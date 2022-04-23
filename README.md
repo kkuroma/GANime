@@ -36,7 +36,7 @@ it = next(iter(dl))
 plotter(it, rows=8, columns=8, renormalize_func = lambda x: (x*127.5+127.5).astype(int))
 ```
 
-Example of using the package on your dataloader.
+Training with your own dataloader.
 
 ```
 from GANime.gan import GAN
@@ -46,4 +46,31 @@ gan_model.train(dl,
                 num_epochs = 20,
                 batch_size = 128,
                 plot = True,)
+
+#save trained model
+import torch
+torch.save(gan_model.gen.state_dict(), 'gen.pt')
+torch.save(gan_model.dis.state_dict(), 'dis.pt')
 ```
+
+Doing inference with your trained model
+
+```
+from GANime.gan import GAN
+
+#initialize new model with random weights
+new_gan_model = GAN(seed_size)
+
+#load model trained for 100 epochs
+new_gan_model.gen.load_state_dict(torch.load('GANime/example_models/gen.pt'))
+new_gan_model.dis.load_state_dict(torch.load('GANime/example_models/dis.pt'))
+
+#infer generation
+generated_images = new_gan_model.generate(num_rows=8,
+               num_cols=8,
+               plot=True,
+               device='cpu',
+               return_noise=False
+              )
+```
+
