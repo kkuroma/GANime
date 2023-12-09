@@ -38,7 +38,7 @@ plotter(it, rows=8, columns=8, renormalize_func = lambda x: (x*127.5+127.5).asty
 
 Training with your own dataloader.
 
-```
+```python
 from GANime.gan import GAN
 seed_size = 128
 gan_model = GAN(seed_size)
@@ -55,7 +55,7 @@ torch.save(gan_model.dis.state_dict(), 'dis.pt')
 
 Doing inference with your trained model
 
-```
+```python
 from GANime.gan import GAN
 
 #initialize new model with random weights
